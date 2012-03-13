@@ -2,13 +2,13 @@
 #include <Ports.h>
 #include <RF12.h>
 
-
 int pin=5;
 
 unsigned long previousWdtMillis, previousEthernetMillis, previousClicksMillis;
 float windSpeed;
 unsigned volatile int clicks;
 
+ISR(WDT_vect) { Sleepy::watchdogEvent(); }
 
 // Pin change interrupt control register - enables interrupt vectors
 // Bit 2 = enable PC vector 2 (PCINT23..16)
@@ -28,6 +28,7 @@ void setup () {
     
     PCICR |= (1 << PCIE2);
     PCMSK2 |= (1 << PCINT21);
+    //MCUCR = (1<<ISC01) | (1<<ISC01);
     clicks=0;
     previousClicksMillis = previousEthernetMillis = previousWdtMillis = millis();
 }
@@ -42,6 +43,7 @@ void loop () {
      Serial.print("  m/s   -> ");
      Serial.print((windSpeed*3600)/1000);
      Serial.println("  km/h");
+     Sleepy::loseSomeTime(10000);
    }
 }
 
