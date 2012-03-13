@@ -15,10 +15,8 @@ unsigned volatile int clicks;
 // Bit 1 = enable PC vector 1 (PCINT14..8)
 // Bit 0 = enable PC vector 0 (PCINT7..0)
 ISR(PCINT2_vect) {
- if(digitalRead(pin) == HIGH) {
       //Serial.println("Tick...");
       clicks++;
-  }
 }
 
 void setup () {
@@ -51,7 +49,7 @@ void loop () {
 void updateValues(){ 
   unsigned long now = millis();
   float windCountTime = (now - previousClicksMillis) / 1000.0;  
-  windSpeed = 1.1176 * ((float) clicks / windCountTime);
+  windSpeed = 1.1176 * ((float) (clicks/2) / windCountTime);
   clicks = 0;  
   previousClicksMillis = now;
 }
