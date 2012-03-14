@@ -15,7 +15,7 @@ ISR(WDT_vect) { Sleepy::watchdogEvent(); }
 // Bit 1 = enable PC vector 1 (PCINT14..8)
 // Bit 0 = enable PC vector 0 (PCINT7..0)
 ISR(PCINT2_vect) {
-      //Serial.println("Tick...");
+      Serial.println("Tick...");
       clicks++;
 }
 
