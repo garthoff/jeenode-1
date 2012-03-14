@@ -8,14 +8,14 @@ unsigned long previousWdtMillis, previousEthernetMillis, previousClicksMillis;
 float windSpeed;
 unsigned volatile int clicks;
 
-ISR(WDT_vect) { Sleepy::watchdogEvent(); }
+ISR(WDT_vect) { Sleepy::watchdogEvent();}
 
 // Pin change interrupt control register - enables interrupt vectors
 // Bit 2 = enable PC vector 2 (PCINT23..16)
 // Bit 1 = enable PC vector 1 (PCINT14..8)
 // Bit 0 = enable PC vector 0 (PCINT7..0)
 ISR(PCINT2_vect) {
-      Serial.println("Tick...");
+      //Serial.println("Tick...");
       clicks++;
 }
 
@@ -35,7 +35,7 @@ void setup () {
 
 
 void loop () {
- if (clicks >= 5) { 
+ if (clicks >= 10) { 
      //Update RPM every 20 counts, increase this for better RPM resolution,
      updateValues();
      Serial.print("windSpeed= ");
@@ -43,7 +43,9 @@ void loop () {
      Serial.print("  m/s   -> ");
      Serial.print((windSpeed*3600)/1000);
      Serial.println("  km/h");
-     Sleepy::loseSomeTime(10000);
+      Serial.print("sleep...");
+     Sleepy::loseSomeTime(60000);
+     
    }
 }
 
