@@ -20,7 +20,7 @@ ISR(PCINT2_vect) {
 }
 
 typedef struct {   
-    //unsigned int time;
+    unsigned int time;
     float windSpeed;   
 } WindData;
 
@@ -45,9 +45,9 @@ void loop () {
     
       //Update RPM every 20 counts, increase this for better RPM resolution,
       measureWind();
-      WindData buf;
-      //buf.time = millis();
-      buf.windSpeed = (windSpeed*3600)/1000;
+      WindData windData;
+      windData.time = millis();
+      windData.windSpeed = (windSpeed*3600)/1000;
       Serial.print("windSpeed= ");
       Serial.print(windSpeed);
       Serial.print("  m/s   -> ");
@@ -58,7 +58,7 @@ void loop () {
             rf12_recvDone();
       }
 
-      rf12_sendStart(0, &buf, sizeof buf); // send the data
+      rf12_sendStart(0, &windData, sizeof windData); // send the data
 
       while (!rf12_canSend()){    // wait until sending has been completed
             rf12_recvDone();

@@ -2,9 +2,9 @@
 #include <avr/sleep.h>
 
 typedef struct {   
-    //unsigned int time;
+    unsigned int time;
     float windSpeed;   
-} payload;
+} WindData;
 
 ISR(WDT_vect) { Sleepy::watchdogEvent(); }
 
@@ -15,16 +15,19 @@ void setup () {
 }
 
 void loop () {
-  if (rf12_recvDone() && rf12_crc == 0) {
+  WindData windData;
+  if (rf12_recvDone() && rf12_crc == 0 /*&& rf12_len == sizeof windData*/) {
+    
     // process incoming data here
-    Serial.print(" seq ");
-    Serial.print(rf12_seq);
-    Serial.print(" =");
-    for (byte i = 0; i < rf12_len; ++i) {
-      Serial.print(' ');
-      Serial.print(rf12_data[i],DEC);
-    }
-    Serial.println();
+    memcpy(&windData, (byte*) rf12_data, sizeof windData);
+    
+    Serial.print("time= ");
+    Serial.print(windData.time);
+    Serial.print("  windSpeed= ");
+    Serial.print(windData.windSpeed);
+    Serial.print("  m/s   -> ");
+    Serial.print((windData.windSpeed*3600)/1000);
+    Serial.println("  km/h");
   }
 }
 
