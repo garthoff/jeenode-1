@@ -53,7 +53,16 @@ void loop () {
       Serial.print("  m/s   -> ");
       Serial.print((windSpeed*3600)/1000);
       Serial.println("  km/h");
-      Serial.print("sleep...");
+
+      while (!rf12_canSend()){    // wait until sending is allowed
+            rf12_recvDone();
+      }
+
+      rf12_sendStart(0, &buf, sizeof buf); // send the data
+
+      while (!rf12_canSend()){    // wait until sending has been completed
+            rf12_recvDone();
+      }
      
    }
 }
