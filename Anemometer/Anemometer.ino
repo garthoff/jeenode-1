@@ -2,7 +2,8 @@
 #include <Ports.h>
 #include <RF12.h>
 
-int pin=5;
+//int pin=5;
+#define pin (5)
 
 unsigned long previousWdtMillis, previousEthernetMillis, previousClicksMillis;
 float windSpeed;
