@@ -52,7 +52,7 @@ void loop () {
       Serial.print("windSpeed= ");
       Serial.print(windData.windSpeed);
       Serial.print("  m/s   -> ");
-      Serial.print((windSpeed*3600)/1000);
+      Serial.print((windData.windSpeed*3600)/1000);
       Serial.println("  km/h");
 
       while (!rf12_canSend()){    // wait until sending is allowed
