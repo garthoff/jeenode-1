@@ -2,7 +2,8 @@
 #include <Ports.h>
 #include <RF12.h>
 
-int pin=5;
+//int pin=5;
+#define pin (5)
 
 unsigned long previousWdtMillis, previousEthernetMillis, previousClicksMillis;
 float windSpeed;
@@ -49,9 +50,9 @@ void loop () {
       windData.time = millis();
       windData.windSpeed = (windSpeed*3600)/1000;
       Serial.print("windSpeed= ");
-      Serial.print(windSpeed);
+      Serial.print(windData.windSpeed);
       Serial.print("  m/s   -> ");
-      Serial.print((windSpeed*3600)/1000);
+      Serial.print((windData.windSpeed*3600)/1000);
       Serial.println("  km/h");
 
       while (!rf12_canSend()){    // wait until sending is allowed
