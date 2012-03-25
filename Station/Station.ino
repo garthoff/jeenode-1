@@ -16,7 +16,7 @@ void setup () {
 
 void loop () {
   WindData windData;
-  if (rf12_recvDone() && rf12_crc == 0 /*&& rf12_len == sizeof windData*/) {
+  if (rf12_recvDone() && rf12_crc == 0 && rf12_len == sizeof windData) {
     
     // process incoming data here
     memcpy(&windData, (byte*) rf12_data, sizeof windData);

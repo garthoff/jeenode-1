@@ -8,7 +8,7 @@ unsigned long previousWdtMillis, previousEthernetMillis, previousClicksMillis;
 float windSpeed;
 unsigned volatile int clicks;
 
-//ISR(WDT_vect) { Sleepy::watchdogEvent();}
+ISR(WDT_vect) { Sleepy::watchdogEvent();}
 
 // Pin change interrupt control register - enables interrupt vectors
 // Bit 2 = enable PC vector 2 (PCINT23..16)
@@ -64,6 +64,14 @@ void loop () {
             rf12_recvDone();
       }
      
+     // go to sleep
+      Serial.print("wait 5sec...");
+      delay(5000);
+      Serial.print("sleep...");
+      delay(2000);
+      Sleepy::loseSomeTime(30000);
+      delay(1000);
+      Serial.print("wakeup..");
    }
 }
 
