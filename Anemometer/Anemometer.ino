@@ -48,12 +48,14 @@ void loop () {
       measureWind();
       WindData windData;
       windData.time = millis();
-      windData.windSpeed = (windSpeed*3600)/1000;
+      windData.windSpeed = windSpeed;
       Serial.print("windSpeed= ");
       Serial.print(windData.windSpeed);
-      Serial.print("  m/s   -> ");
-      Serial.print((windData.windSpeed*3600)/1000);
-      Serial.println("  km/h");
+      Serial.print("  mph   -> ");
+      Serial.print(windData.windSpeed*1.60934);
+      Serial.print("  km/h   ");
+      Serial.print((windData.windSpeed)*1.60934*1000/3600);
+      Serial.println("  m/s");
 
       while (!rf12_canSend()){    // wait until sending is allowed
             rf12_recvDone();
@@ -66,21 +68,25 @@ void loop () {
       }
      
      // go to sleep
-      Serial.print("wait 5sec...");
+     /* Serial.print("wait 5sec...");
       delay(5000);
       Serial.print("sleep...");
       delay(2000);
       Sleepy::loseSomeTime(30000);
       delay(1000);
       Serial.print("wakeup..");
+      */
    }
 }
 
 
 static void measureWind(){ 
   unsigned long now = millis();
-  float windCountTime = (now - previousClicksMillis) / 1000.0;  
-  windSpeed = 1.1176 * ((float) (clicks/2) / windCountTime);
+  float windCountTime = ((now - previousClicksMillis) / 1000.0); 
+  Serial.print("Hz= "); 
+  Serial.print(((float) (clicks/2) / windCountTime));
+  Serial.print("   "); 
+  windSpeed = (2.5 * ((float) (clicks/2) / windCountTime));
   clicks = 0;  
   previousClicksMillis = now;
 }
